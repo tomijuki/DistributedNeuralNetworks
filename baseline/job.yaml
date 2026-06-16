@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mnist-baseline-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: mnist-baseline-container
+        image: mnist-baseline:latest
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: output-volume
+          mountPath: /app/runs
+        - name: model-volume
+          mountPath: /app/model.pth
+      restartPolicy: Never
+      volumes:
+      - name: output-volume
+        hostPath:
+          path: /home/tomijuki/DIPLOMSKI/runs
+          type: DirectoryOrCreate
+      - name: model-volume
+        hostPath:
+          path: /home/tomijuki/DIPLOMSKI/model.pth
+          type: FileOrCreate
+  backoffLimit: 0

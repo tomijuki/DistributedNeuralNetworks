@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mnist-ddp-service
+spec:
+  clusterIP: None
+  publishNotReadyAddresses: true
+  selector:
+    app: mnist-ddp
+---
+# 2. Job (Creates 4 indexed pods)
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mnist-ddp-worker
+spec:
+  completions: 4
+  parallelism: 4
+  completionMode: Indexed
+  template:
+    metadata:
+      labels:
+        app: mnist-ddp
+    spec:
+      subdomain: "mnist-ddp-service"
+      restartPolicy: Never
+      containers:
+      - name: pytorch
+        image: mnist-ddp:latest
+        imagePullPolicy: IfNotPresent
+        command:
+        - torchrun
+        - --nnodes=4
+        - --nproc_per_node=1
+        - --rdzv_id=123
+        - --rdzv_backend=c10d
+        # pod 0 acts as the rendezvous server
+        - --rdzv_endpoint=mnist-ddp-worker-0.mnist-ddp-service:29500
+        - main.py
+        env:
+        - name: GLOO_SOCKET_IFNAME
+          value: "eth0"
+        - name: TP_SOCKET_IFNAME
+          value: "eth0"
+        volumeMounts:
+        - name: output-volume
+          mountPath: /app/runs
+        - name: model-volume
+          mountPath: /app/model.pth
+      volumes:
+      - name: output-volume
+        hostPath:
+          path: /home/tomijuki/DIPLOMSKI/runs
+          type: DirectoryOrCreate
+      - name: model-volume
+        hostPath:
+          path: /home/tomijuki/DIPLOMSKI/distributed/DDP/model.pth
+          type: FileOrCreate
