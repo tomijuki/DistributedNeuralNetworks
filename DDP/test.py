@@ -239,7 +239,7 @@ def main():
 
         # Save the underlying module's state dict (strips the "module." prefix).
         # Writes to /app/model.pth (mounted volume).
-        torch.save(ddp_model.module.state_dict(), "model.pth")
+        torch.save(ddp_model.module.state_dict(), "distributed/model.pth")
         print("Saved PyTorch Model State to model.pth", flush=True)
 
         writer.flush()  # flush the tensorboard writer

@@ -6,5 +6,5 @@ nodes:
   extraMounts:
   - hostPath: /home/tomijuki/DIPLOMSKI/runs
     containerPath: /home/tomijuki/DIPLOMSKI/runs
-  - hostPath: /home/tomijuki/DIPLOMSKI/distributed/DDP
-    containerPath: /home/tomijuki/DIPLOMSKI/distributed/DDP
+  - hostPath: /home/tomijuki/DIPLOMSKI/distributed
+    containerPath: /home/tomijuki/DIPLOMSKI/distributed
