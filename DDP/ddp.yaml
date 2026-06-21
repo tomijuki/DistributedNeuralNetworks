@@ -36,7 +36,7 @@ spec:
         - --rdzv_backend=c10d
         # pod 0 acts as the rendezvous server
         - --rdzv_endpoint=mnist-ddp-worker-0.mnist-ddp-service:29500
-        - test.py
+        - main.py
         env:
         - name: GLOO_SOCKET_IFNAME
           value: "eth0"
@@ -46,7 +46,7 @@ spec:
         - name: output-volume
           mountPath: /app/runs
         - name: model-volume
-          mountPath: /app/model.pth
+          mountPath: /app/models
       volumes:
       - name: output-volume
         hostPath:
@@ -54,5 +54,5 @@ spec:
           type: DirectoryOrCreate
       - name: model-volume
         hostPath:
-          path: /home/tomijuki/DIPLOMSKI/distributed
+          path: /home/tomijuki/DIPLOMSKI/models
           type: DirectoryOrCreate

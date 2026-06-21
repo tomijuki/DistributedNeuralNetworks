@@ -13,7 +13,7 @@ spec:
         - name: output-volume
           mountPath: /app/runs
         - name: model-volume
-          mountPath: /app/model.pth
+          mountPath: /app/models
       restartPolicy: Never
       volumes:
       - name: output-volume
@@ -22,6 +22,13 @@ spec:
           type: DirectoryOrCreate
       - name: model-volume
         hostPath:
-          path: /home/tomijuki/DIPLOMSKI/model.pth
-          type: FileOrCreate
+          path: /home/tomijuki/DIPLOMSKI/models
+          type: DirectoryOrCreate
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app: mnist-ddp
+            topologyKey: kubernetes.io/hostname
   backoffLimit: 0

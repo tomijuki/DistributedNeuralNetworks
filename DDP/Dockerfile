@@ -10,7 +10,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 #copy the rest of the application code to the container
-COPY test.py .
+COPY main.py .
 
 #command to run the training script
-CMD ["python", "test.py"]
+CMD ["python", "main.py"]

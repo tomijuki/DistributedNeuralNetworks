@@ -1,4 +1,6 @@
 baseline/data
 baseline/runs
-distributed/DDP/data
-distributed/DDP/runs
+DDP/data
+DDP/runs
+PipelineParallel/data
+PipelineParallel/runs

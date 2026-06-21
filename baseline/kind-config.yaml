@@ -3,7 +3,8 @@ apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
 - role: control-plane
   image: kindest/node:v1.34.2
-  # This mounts a folder from your host into the Kind node
   extraMounts:
-  - hostPath: /home/tomijuki/DIPLOMSKI/runs  # Change this to your ACTUAL local path
-    containerPath: /home/tomijuki/DIPLOMSKI/runs       # This is the path inside the Kind node
+  - hostPath: /home/tomijuki/DIPLOMSKI/runs
+    containerPath: /home/tomijuki/DIPLOMSKI/runs
+  - hostPath: /home/tomijuki/DIPLOMSKI/models
+    containerPath: /home/tomijuki/DIPLOMSKI/models
