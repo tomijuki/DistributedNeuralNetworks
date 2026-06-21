@@ -1,0 +1,72 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="26BojIe1PqsypSsBMeYO" name="Page-1">
+    <mxGraphModel dx="1400" dy="763" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="rTxfEfP0DAb2uoGDw9-g-16" edge="1" parent="1" source="rTxfEfP0DAb2uoGDw9-g-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endArrow=none;endFill=0;" target="rTxfEfP0DAb2uoGDw9-g-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rTxfEfP0DAb2uoGDw9-g-7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="W&lt;sub&gt;0&lt;/sub&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="232.5" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="rTxfEfP0DAb2uoGDw9-g-17" edge="1" parent="1" source="rTxfEfP0DAb2uoGDw9-g-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endArrow=none;endFill=0;" target="rTxfEfP0DAb2uoGDw9-g-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rTxfEfP0DAb2uoGDw9-g-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="W&lt;span style=&quot;font-size: 10px;&quot;&gt;1&lt;/span&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="375" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="rTxfEfP0DAb2uoGDw9-g-18" edge="1" parent="1" source="rTxfEfP0DAb2uoGDw9-g-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endArrow=none;endFill=0;" target="rTxfEfP0DAb2uoGDw9-g-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rTxfEfP0DAb2uoGDw9-g-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="W&lt;span style=&quot;font-size: 10px;&quot;&gt;2&lt;/span&gt;" vertex="1">
+          <mxGeometry height="40" width="100" x="520" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="rTxfEfP0DAb2uoGDw9-g-28" edge="1" parent="1" source="rTxfEfP0DAb2uoGDw9-g-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" target="rTxfEfP0DAb2uoGDw9-g-25">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="363" y="390" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rTxfEfP0DAb2uoGDw9-g-13" parent="1" style="sketch=0;outlineConnect=0;fillColor=#f8cecc;strokeColor=#b85450;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.traditional_server;" value="Čvor 1&lt;div&gt;težine W&lt;sub&gt;0&lt;/sub&gt;&amp;nbsp;+ ulaz X&amp;nbsp;&lt;/div&gt;&lt;div&gt;-&amp;gt; izlaz Y&lt;sub&gt;0&lt;/sub&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="78" width="45" x="260" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="rTxfEfP0DAb2uoGDw9-g-29" edge="1" parent="1" source="rTxfEfP0DAb2uoGDw9-g-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;opacity=50;" target="rTxfEfP0DAb2uoGDw9-g-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rTxfEfP0DAb2uoGDw9-g-14" parent="1" style="sketch=0;outlineConnect=0;fillColor=#e1d5e7;strokeColor=#9673a6;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.traditional_server;" value="Čvor 2&lt;div&gt;težine W&lt;span style=&quot;font-size: 10px;&quot;&gt;1&lt;/span&gt;&amp;nbsp;+ ulaz X&amp;nbsp;&lt;/div&gt;&lt;div&gt;-&amp;gt; izlaz Y&lt;span style=&quot;font-size: 10px;&quot;&gt;1&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="78" width="45" x="403" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="rTxfEfP0DAb2uoGDw9-g-30" edge="1" parent="1" source="rTxfEfP0DAb2uoGDw9-g-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" target="rTxfEfP0DAb2uoGDw9-g-25">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="486" y="390" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rTxfEfP0DAb2uoGDw9-g-15" parent="1" style="sketch=0;outlineConnect=0;fillColor=#d5e8d4;strokeColor=#82b366;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.traditional_server;" value="Čvor 3&lt;div&gt;težine W&lt;span style=&quot;font-size: 10px;&quot;&gt;3&lt;/span&gt;&amp;nbsp;+ ulaz X&amp;nbsp;&lt;/div&gt;&lt;div&gt;-&amp;gt; izlaz Y&lt;span style=&quot;font-size: 10px;&quot;&gt;3&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="78" width="45" x="547.5" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="rTxfEfP0DAb2uoGDw9-g-19" parent="1" style="text;html=1;whiteSpace=wrap;align=center;verticalAlign=middle;rounded=0;fillColor=none;" value="Matrica težina W - podjela po stupcima ili redcima" vertex="1">
+          <mxGeometry height="30" width="235" x="312.5" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="rTxfEfP0DAb2uoGDw9-g-27" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="40" width="245.5" x="302" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="rTxfEfP0DAb2uoGDw9-g-25" parent="rTxfEfP0DAb2uoGDw9-g-27" style="shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fixedSize=1;rotation=-180;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" value="" vertex="1">
+          <mxGeometry height="40" width="245.5" as="geometry" />
+        </mxCell>
+        <mxCell id="rTxfEfP0DAb2uoGDw9-g-26" parent="rTxfEfP0DAb2uoGDw9-g-27" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="All-gather / All-reduce&lt;br&gt;spajanje parcijalnih izlaza" vertex="1">
+          <mxGeometry height="30" width="202" x="21.75" y="5" as="geometry" />
+        </mxCell>
+        <mxCell id="rTxfEfP0DAb2uoGDw9-g-32" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Izlaz Y" vertex="1">
+          <mxGeometry height="30" width="95.25" x="377.88" y="535" as="geometry" />
+        </mxCell>
+        <mxCell id="rTxfEfP0DAb2uoGDw9-g-33" edge="1" parent="1" source="rTxfEfP0DAb2uoGDw9-g-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="rTxfEfP0DAb2uoGDw9-g-32">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,64 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36" border="50" scale="3" compressed="false" locked="false" version="28.2.9">
+  <diagram name="Blank" id="YmL12bMKpDGza6XwsDPr">
+    <mxGraphModel dx="2212" dy="763" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" background="none" math="1" shadow="0">
+      <root>
+        <mxCell id="X5NqExCQtvZxIxQ7pmgY-0" />
+        <mxCell id="1" parent="X5NqExCQtvZxIxQ7pmgY-0" />
+        <mxCell id="5EdyaN80UtW4nSsge0OX-13" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;startArrow=classic;startFill=1;" edge="1" parent="1" source="5EdyaN80UtW4nSsge0OX-1" target="5EdyaN80UtW4nSsge0OX-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5EdyaN80UtW4nSsge0OX-1" value="&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;Klijent 2&lt;/font&gt;" style="sketch=0;outlineConnect=0;fontColor=#ffffff;fillColor=#647687;strokeColor=#314354;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.client;" vertex="1" parent="1">
+          <mxGeometry x="-701" y="449" width="78" height="76" as="geometry" />
+        </mxCell>
+        <mxCell id="5EdyaN80UtW4nSsge0OX-14" style="edgeStyle=none;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=classic;startFill=1;endArrow=classic;" edge="1" parent="1" source="5EdyaN80UtW4nSsge0OX-2" target="5EdyaN80UtW4nSsge0OX-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5EdyaN80UtW4nSsge0OX-2" value="&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;Klijent 1&lt;/font&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#ffffff;fillColor=#647687;strokeColor=#314354;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.client;" vertex="1" parent="1">
+          <mxGeometry x="-658" y="317" width="78" height="76" as="geometry" />
+        </mxCell>
+        <mxCell id="5EdyaN80UtW4nSsge0OX-15" style="edgeStyle=none;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=classic;startFill=1;endArrow=classic;" edge="1" parent="1" source="5EdyaN80UtW4nSsge0OX-3" target="5EdyaN80UtW4nSsge0OX-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5EdyaN80UtW4nSsge0OX-3" value="&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;Klijent 3&lt;/font&gt;" style="sketch=0;outlineConnect=0;fontColor=#ffffff;fillColor=#647687;strokeColor=#314354;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.client;" vertex="1" parent="1">
+          <mxGeometry x="-667" y="581" width="78" height="76" as="geometry" />
+        </mxCell>
+        <mxCell id="5EdyaN80UtW4nSsge0OX-5" value="Poslužitelj 1" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#232F3D;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.traditional_server;" vertex="1" parent="1">
+          <mxGeometry x="-354" y="307" width="72.69" height="126" as="geometry" />
+        </mxCell>
+        <mxCell id="5EdyaN80UtW4nSsge0OX-19" style="edgeStyle=none;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=classic;startFill=1;endArrow=classic;" edge="1" parent="1" source="5EdyaN80UtW4nSsge0OX-6" target="5EdyaN80UtW4nSsge0OX-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5EdyaN80UtW4nSsge0OX-6" value="Poslužitelj 2" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#232F3D;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.traditional_server;" vertex="1" parent="1">
+          <mxGeometry x="-334" y="545" width="66.35" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="5EdyaN80UtW4nSsge0OX-9" value="" style="group;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="-495" y="436" width="69.23000000000002" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="5EdyaN80UtW4nSsge0OX-4" value="Posrednik&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#232F3D;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.traditional_server;" vertex="1" parent="5EdyaN80UtW4nSsge0OX-9">
+          <mxGeometry width="69.23" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="5EdyaN80UtW4nSsge0OX-8" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" vertex="1" parent="5EdyaN80UtW4nSsge0OX-9">
+          <mxGeometry x="45" y="76" width="32" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="5EdyaN80UtW4nSsge0OX-10" value="" style="group;fillColor=none;strokeColor=none;" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="-200" y="562" width="75.23" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="5EdyaN80UtW4nSsge0OX-11" value="&lt;div&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;Poslužitelj baze podataka&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="sketch=0;outlineConnect=0;fontColor=#ffffff;fillColor=#76608a;strokeColor=#432D57;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.traditional_server;" vertex="1" parent="5EdyaN80UtW4nSsge0OX-10">
+          <mxGeometry width="46.730250000000005" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="5EdyaN80UtW4nSsge0OX-12" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" vertex="1" parent="5EdyaN80UtW4nSsge0OX-10">
+          <mxGeometry x="24.57560161378532" y="50.625" width="26.0800231113679" height="22.95" as="geometry" />
+        </mxCell>
+        <mxCell id="5EdyaN80UtW4nSsge0OX-16" style="edgeStyle=none;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=classic;startFill=1;endArrow=classic;" edge="1" parent="1" source="5EdyaN80UtW4nSsge0OX-4" target="5EdyaN80UtW4nSsge0OX-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5EdyaN80UtW4nSsge0OX-17" style="edgeStyle=none;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=classic;startFill=1;endArrow=classic;" edge="1" parent="1" source="5EdyaN80UtW4nSsge0OX-4" target="5EdyaN80UtW4nSsge0OX-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5EdyaN80UtW4nSsge0OX-18" style="edgeStyle=none;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=classic;startFill=1;endArrow=classic;" edge="1" parent="1" source="5EdyaN80UtW4nSsge0OX-4" target="5EdyaN80UtW4nSsge0OX-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
