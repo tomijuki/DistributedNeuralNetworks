@@ -12,15 +12,29 @@ import datetime
 import time
 import os
 
+# =========================================================================
+# SHARED TENSORBOARD TAGS (identical in baseline / DDP / pipeline so the
+# curves overlay on the same charts):
+#   Loss/train                        (x = epoch)
+#   Loss/test                         (x = epoch)
+#   Accuracy/train                    (x = epoch)
+#   Accuracy/test                     (x = epoch)
+#   Accuracy/test_over_training_time  (x = cumulative training seconds)
+#   Time/total_training_seconds       (single value at step 0)
+# Run dirs stay DISTINCT (runs/baseline_*, runs/ddp_*, runs/pipeline_*);
+# that's what makes TensorBoard draw the three as separate lines per chart.
+#
+# Logging + model save happen on the LAST rank (the output stage). With the
+# StatefulSet's static rendezvous (node_rank = pod ordinal) that's pod -3.
+# =========================================================================
+
 
 # -------------------------------------------------------------------------
 # Distributed setup / teardown
 # -------------------------------------------------------------------------
 def setup():
-    """Join the torchrun rendezvous (same as the DDP version).
-
-    One process per pod; rank == pipeline stage index. gloo is the CPU
-    backend and supports the point-to-point send/recv that PP relies on.
+    """Join the torchrun rendezvous. One process per pod; rank == stage index.
+    gloo is the CPU backend and supports the point-to-point send/recv PP needs.
     """
     dist.init_process_group(backend="gloo")
 
@@ -31,7 +45,6 @@ def cleanup():
 
 # -------------------------------------------------------------------------
 # Model, defined as 4 sequential STAGES (one per node).
-# Each stage is a self-contained nn.Module. A node only ever builds its own.
 # -------------------------------------------------------------------------
 def build_stage_module(stage_index):
     if stage_index == 0:
@@ -43,6 +56,41 @@ def build_stage_module(stage_index):
     elif stage_index == 3:
         return nn.Sequential(nn.Linear(256, 10))
     raise ValueError(f"no stage defined for index {stage_index}")
+
+
+def gather_full_state(stage_module, num_stages):
+    """Collective: EVERY rank must call this. Gathers each stage's weights so
+    the last rank can reassemble the whole model. Returns the gathered list
+    (meaningful on every rank, but only the last rank uses it)."""
+    cpu_state = {k: v.cpu() for k, v in stage_module.state_dict().items()}
+    gathered = [None] * num_stages
+    dist.all_gather_object(gathered, cpu_state)
+    return gathered
+
+
+def evaluate(gathered, num_stages, test_dataloader, loss_fn, device):
+    """Rebuild the full model from gathered stage weights and run the held-out
+    test set. Called on the last rank only. Returns (test_loss, test_acc)."""
+    full = [build_stage_module(i) for i in range(num_stages)]
+    for i, m in enumerate(full):
+        m.load_state_dict(gathered[i])
+        m.eval()
+
+    def full_forward(x):
+        for m in full:
+            x = m(x)
+        return x
+
+    test_loss, correct = 0.0, 0
+    with torch.no_grad():
+        for X, y in test_dataloader:
+            X, y = X.to(device), y.to(device)
+            pred = full_forward(X)
+            test_loss += loss_fn(pred, y).item()
+            correct += (pred.argmax(1) == y).type(torch.float).sum().item()
+    test_loss /= len(test_dataloader)
+    test_acc = 100 * correct / len(test_dataloader.dataset)
+    return test_loss, test_acc
 
 
 # -------------------------------------------------------------------------
@@ -64,18 +112,13 @@ def main():
     stage_module = build_stage_module(stage_index).to(device)
     optimizer = torch.optim.SGD(stage_module.parameters(), lr=1e-3)
 
-    # Wrap the local module as a pipeline stage. Shapes for the inter-stage
-    # send/recv are inferred automatically by the runtime.
     stage = PipelineStage(stage_module, stage_index, num_stages, device)
 
-    # The schedule owns microbatch splitting, communication, and the backward
-    # pass. Passing loss_fn here is what makes .step() run backward for us.
     n_microbatches = 4  # more microbatches -> smaller pipeline bubble
     loss_fn = nn.CrossEntropyLoss()
     schedule = ScheduleGPipe(stage, n_microbatches=n_microbatches, loss_fn=loss_fn)
 
-    # ---- data: NOT sharded. Every rank iterates the same order so they agree
-    # on batch boundaries; stage 0 feeds X, the last stage consumes y. ----
+    # ---- data: NOT sharded. Every rank iterates the same order. ----
     training_data = datasets.MNIST(root="data", train=True, download=True, transform=ToTensor())
     test_data = datasets.MNIST(root="data", train=False, download=True, transform=ToTensor())
 
@@ -84,7 +127,6 @@ def main():
     train_dataloader = DataLoader(training_data, batch_size=batch_size, shuffle=False, drop_last=True)
     test_dataloader = DataLoader(test_data, batch_size=batch_size)
 
-    # tensorboard + prints live on the LAST stage (that's where output/loss are)
     writer = None
     if is_last:
         run_id = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -106,71 +148,55 @@ def main():
         for X, y in train_dataloader:
             X, y = X.to(device), y.to(device)
 
-            # Drive the pipeline. Only stage 0 supplies input; only the last
-            # stage supplies the target and receives the output.
             if stage_index == 0:
                 schedule.step(X)
             elif is_last:
                 losses = []  # one entry per microbatch
                 output = schedule.step(target=y, losses=losses)
                 running_loss += torch.stack(losses).mean().item()
-                correct += (output.argmax(1) == y).sum().item()
+                correct += (output.argmax(1) == y).type(torch.float).sum().item()
                 seen += y.size(0)
             else:
                 schedule.step()
 
-            # Each node updates only its own stage's parameters. The schedule
-            # already populated .grad during its internal backward.
             optimizer.step()
             optimizer.zero_grad()
 
+        # Stop the TRAIN timer before evaluating (test is not timed, exactly
+        # like baseline/DDP).
         total_train_time += time.perf_counter() - t0
 
+        # Per-epoch held-out test. gather_full_state is collective -> ALL ranks
+        # call it every epoch; only the last rank evaluates and logs.
+        gathered = gather_full_state(stage_module, num_stages)
+
         if is_last:
+            test_loss, test_acc = evaluate(gathered, num_stages, test_dataloader, loss_fn, device)
+
             num_batches = len(train_dataloader)
             train_loss = running_loss / num_batches
             train_acc = 100 * correct / seen
-            print(f"train loss: {train_loss:>7f}  train acc: {train_acc:>0.1f}%", flush=True)
-            writer.add_scalar("Train/Loss_per_epoch", train_loss, t)
-            writer.add_scalar("Train/Accuracy_per_epoch", train_acc, t)
-            writer.add_scalar("Train/Accuracy_over_training_time", train_acc, int(round(total_train_time)))
 
-    # ---- held-out test ----
-    # Gather every stage's weights onto the last rank, rebuild the full model
-    # there, and evaluate normally. Exact, and avoids running backward at eval.
-    cpu_state = {k: v.cpu() for k, v in stage_module.state_dict().items()}
-    gathered = [None] * num_stages
-    dist.all_gather_object(gathered, cpu_state)
+            print(f"train: loss {train_loss:>7f} acc {train_acc:>0.1f}%  |  "
+                  f"test: loss {test_loss:>7f} acc {test_acc:>0.1f}%", flush=True)
+
+            writer.add_scalar("Loss/train", train_loss, t)
+            writer.add_scalar("Loss/test", test_loss, t)
+            writer.add_scalar("Accuracy/train", train_acc, t)
+            writer.add_scalar("Accuracy/test", test_acc, t)
+            writer.add_scalar("Accuracy/test_over_training_time", test_acc, int(round(total_train_time)))
+
+    # ---- final gather (collective: all ranks) so the last rank can save ----
+    gathered = gather_full_state(stage_module, num_stages)
 
     if is_last:
-        full = [build_stage_module(i) for i in range(num_stages)]
-        for i, m in enumerate(full):
-            m.load_state_dict(gathered[i])
-            m.eval()
-
-        def full_forward(x):
-            for m in full:
-                x = m(x)
-            return x
-
-        test_loss, correct = 0.0, 0
-        with torch.no_grad():
-            for X, y in test_dataloader:
-                pred = full_forward(X)
-                test_loss += loss_fn(pred, y).item()
-                correct += (pred.argmax(1) == y).sum().item()
-        test_loss /= len(test_dataloader)
-        test_acc = 100 * correct / len(test_data)
-        print(f"\nTest Error: \n Accuracy: {test_acc:>0.1f}%, Avg loss: {test_loss:>8f}", flush=True)
+        print("Done!", flush=True)
         print(f"Total time spent training: {total_train_time:.2f} s", flush=True)
+        writer.add_scalar("Time/total_training_seconds", total_train_time, 0)
 
-        writer.add_scalar("Test/Accuracy", test_acc, 0)
-        writer.add_scalar("Time/Total_training_time_seconds", total_train_time, 0)
-
-        # save the reassembled full model
         os.makedirs("models", exist_ok=True)
-        torch.save({f"stage{i}": gathered[i] for i in range(num_stages)}, "models/model_pipeline.pth")
-        print("Saved pipeline model to model_pipeline.pth", flush=True)
+        torch.save({f"stage{i}": gathered[i] for i in range(num_stages)}, "models/pipeline_model.pth")
+        print("Saved pipeline model to models/pipeline_model.pth", flush=True)
 
         writer.flush()
         writer.close()

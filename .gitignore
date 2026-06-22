@@ -10,3 +10,4 @@ PipelineParallel/models
 runs
 output
 *.png
+.venv
