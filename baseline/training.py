@@ -8,6 +8,7 @@ import torch.nn.functional as F
 
 import datetime
 import time
+import os
 
 # =========================================================================
 # SHARED TENSORBOARD TAGS (identical in baseline / DDP / pipeline so the
@@ -159,6 +160,7 @@ def main():
     print(f"Total time spent training: {total_train_time:.2f} s")
     writer.add_scalar("Time/total_training_seconds", total_train_time, 0)
 
+    os.makedirs("models", exist_ok=True)
     torch.save(model.state_dict(), "models/baseline_model.pth")
     print("Saved PyTorch Model State to baseline_model.pth")
     writer.flush()

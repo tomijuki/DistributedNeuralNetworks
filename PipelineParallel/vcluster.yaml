@@ -1,0 +1,18 @@
+# vind config for the DDP StatefulSet: 4 nodes (control-plane + 3 workers),
+# NO host volume mounts. Per-pod data is stored via local-path PVCs inside
+# the nodes (the StatefulSet's volumeClaimTemplates) and pulled out with
+# collect.sh -- nothing binds to your real host, so the disk stays safe.
+#
+# Recreate after editing:  vcluster delete mnist-pipeline
+#                          vcluster create mnist-pipeline -f pipeline-vcluster.yaml
+controlPlane:
+  distro:
+    k8s:
+      version: "v1.34.0"
+
+experimental:
+  docker:
+    nodes:
+      - name: worker-1
+      - name: worker-2
+      - name: worker-3

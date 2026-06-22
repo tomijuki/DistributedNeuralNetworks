@@ -1,0 +1,7 @@
+# Baseline: single-node vind cluster, NO host volume mounts.
+# Outputs (runs/, model) stay inside the container; pull them out
+# afterwards with:  ./collect.sh mnist-baseline-job
+controlPlane:
+  distro:
+    k8s:
+      version: "v1.34.0"

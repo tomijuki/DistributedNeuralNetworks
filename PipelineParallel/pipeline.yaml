@@ -1,53 +1,49 @@
-# DDP as a StatefulSet: stable hostnames (mnist-ddp-0..3), static rendezvous
-# so rank 0 == pod mnist-ddp-0 deterministically, per-pod local-path volumes.
-# No host mounts, no NFS. Collect with:  kubectl cp mnist-ddp-0:/app/runs ...
 apiVersion: v1
 kind: Service
 metadata:
-  name: mnist-ddp
+  name: mnist-pipeline
 spec:
-  clusterIP: None              # headless -> gives each pod stable DNS
+  clusterIP: None              # Headless service for stable DNS per pod
   selector:
-    app: mnist-ddp
+    app: mnist-pipeline
   ports:
   - { name: rdzv, port: 29500 }
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mnist-ddp
+  name: mnist-pipeline
 spec:
-  serviceName: mnist-ddp
+  serviceName: mnist-pipeline
   replicas: 4
-  podManagementPolicy: Parallel    # start all 4 at once (rendezvous needs them together)
+  podManagementPolicy: Parallel    # Launches all 4 stages simultaneously
   selector:
     matchLabels:
-      app: mnist-ddp
+      app: mnist-pipeline
   template:
     metadata:
       labels:
-        app: mnist-ddp
+        app: mnist-pipeline
     spec:
-      # one pod per node (drop or make 'preferred' if you have <4 schedulable nodes)
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
               matchLabels:
-                app: mnist-ddp
+                app: mnist-pipeline
             topologyKey: kubernetes.io/hostname
       containers:
       - name: pytorch
-        image: mnist-ddp:latest
+        image: mnist-pipeline:latest  # Make sure to tag your built image as this
         imagePullPolicy: Always
         command: ["/bin/sh", "-c"]
         args:
         - |
-          NODE_RANK="$(hostname | sed 's/.*-//')"   # mnist-ddp-2 -> 2
+          NODE_RANK="$(hostname | sed 's/.*-//')"   # Extracts stage index (0-3) from pod name
           echo "host=$(hostname) node_rank=$NODE_RANK"
           torchrun --nnodes=4 --nproc_per_node=1 \
             --node_rank="$NODE_RANK" \
-            --master_addr=mnist-ddp-0.mnist-ddp --master_port=29500 \
+            --master_addr=mnist-pipeline-0.mnist-pipeline --master_port=29500 \
             main.py
           echo "=== training done; pod staying up for collection ==="
           sleep infinity
@@ -66,7 +62,7 @@ spec:
       name: output
     spec:
       accessModes: ["ReadWriteOnce"]
-      storageClassName: local-path     # verify: kubectl get storageclass
+      storageClassName: local-path     # Uses local-path provisioning within KinD
       resources:
         requests:
           storage: 1Gi

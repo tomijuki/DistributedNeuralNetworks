@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e
 
-IMAGE_NAME="mnist-ddp"
-JOB_NAME="mnist-ddp-worker"
-SERVICE_NAME="mnist-ddp-service"
+IMAGE_NAME="mnist-pipeline"
+JOB_NAME="mnist-pipeline-worker"
+SERVICE_NAME="mnist-pipeline-service"
 
 # Delete previous job and service if they exist
 echo "Deleting previous job and service..."
@@ -15,4 +15,4 @@ echo "Building Docker image..."
 docker build -t "$IMAGE_NAME:latest" .
 
 # Apply the job
-# kubectl apply -f ddp.yaml
+# kubectl apply -f pipeline.yaml

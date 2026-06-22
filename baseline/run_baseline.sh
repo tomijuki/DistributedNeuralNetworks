@@ -14,10 +14,6 @@ kubectl delete service "$SERVICE_NAME" --ignore-not-found
 echo "Building Docker image..."
 docker build -t "$IMAGE_NAME:latest" .
 
-# Load image into kind cluster
-echo "Loading image into kind..."
-kind load docker-image "$IMAGE_NAME:latest"
-
 # Apply the job
 # kubectl apply -f job.yaml
 # kubectl get pods -w

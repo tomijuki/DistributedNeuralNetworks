@@ -10,6 +10,7 @@ from torch.distributed.pipelining import PipelineStage, ScheduleGPipe
 
 import datetime
 import time
+import os
 
 
 # -------------------------------------------------------------------------
@@ -167,7 +168,8 @@ def main():
         writer.add_scalar("Time/Total_training_time_seconds", total_train_time, 0)
 
         # save the reassembled full model
-        torch.save({f"stage{i}": gathered[i] for i in range(num_stages)}, "model_pipeline.pth")
+        os.makedirs("models", exist_ok=True)
+        torch.save({f"stage{i}": gathered[i] for i in range(num_stages)}, "models/model_pipeline.pth")
         print("Saved pipeline model to model_pipeline.pth", flush=True)
 
         writer.flush()

@@ -1,34 +1,54 @@
-apiVersion: batch/v1
-kind: Job
+# Baseline as a single-replica StatefulSet: stable pod name mnist-baseline-0,
+# stays running so you can kubectl cp, per-pod local-path volume.
+apiVersion: v1
+kind: Service
 metadata:
-  name: mnist-baseline-job
+  name: mnist-baseline
 spec:
+  clusterIP: None
+  selector:
+    app: mnist-baseline
+  ports:
+  - { name: dummy, port: 9999 }   # headless services need a port; unused here
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mnist-baseline
+spec:
+  serviceName: mnist-baseline
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mnist-baseline
   template:
+    metadata:
+      labels:
+        app: mnist-baseline
     spec:
       containers:
-      - name: mnist-baseline-container
+      - name: pytorch
         image: mnist-baseline:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          python training.py
+          echo "=== training done; pod staying up for collection ==="
+          sleep infinity
         volumeMounts:
-        - name: output-volume
+        - name: output
           mountPath: /app/runs
-        - name: model-volume
+          subPath: runs
+        - name: output
           mountPath: /app/models
-      restartPolicy: Never
-      volumes:
-      - name: output-volume
-        hostPath:
-          path: /home/tomijuki/DIPLOMSKI/runs
-          type: DirectoryOrCreate
-      - name: model-volume
-        hostPath:
-          path: /home/tomijuki/DIPLOMSKI/models
-          type: DirectoryOrCreate
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchLabels:
-                app: mnist-ddp
-            topologyKey: kubernetes.io/hostname
-  backoffLimit: 0
+          subPath: models
+  volumeClaimTemplates:
+  - metadata:
+      name: output
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: local-path
+      resources:
+        requests:
+          storage: 1Gi
