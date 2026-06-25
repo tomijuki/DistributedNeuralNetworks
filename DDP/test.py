@@ -46,48 +46,47 @@ def pin_to_core(rank, world_size):
 
 
 # define model
-class NeuralNetwork(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.flatten = nn.Flatten()
-        self.linear_relu_stack = nn.Sequential(
-            nn.Linear(28 * 28, 512),
-            nn.ReLU(),
-            nn.Linear(512, 512),
-            nn.ReLU(),
-            nn.Linear(512, 256),
-            nn.ReLU(),
-            nn.Linear(256, 10),
-        )
-
-    def forward(self, x):
-        x = self.flatten(x)
-        logits = self.linear_relu_stack(x)
-        return logits
+#class NeuralNetwork(nn.Module):
+#    def __init__(self):
+#        super().__init__()
+#        self.flatten = nn.Flatten()
+#        self.linear_relu_stack = nn.Sequential(
+#            nn.Linear(28 * 28, 512),
+#            nn.ReLU(),
+#            nn.Linear(512, 512),
+#            nn.ReLU(),
+#            nn.Linear(512, 256),
+#            nn.ReLU(),
+#            nn.Linear(256, 10),
+#        )
+#
+#    def forward(self, x):
+#        x = self.flatten(x)
+#        logits = self.linear_relu_stack(x)
+#        return logits
 
 
 # backup model for real example
-# class NeuralNetwork(nn.Module):
-#     def __init__(self):
-#         super(NeuralNetwork, self).__init__()
-#         self.conv1 = nn.Conv2d(1, 32, 3, 1)
-#         self.conv2 = nn.Conv2d(32, 64, 3, 1)
-#         self.dropout1 = nn.Dropout(0.25)
-#         self.dropout2 = nn.Dropout(0.5)
-#         self.fc1 = nn.Linear(9216, 128)
-#         self.fc2 = nn.Linear(128, 10)
-#
-#     def forward(self, x):
-#         x = self.conv1(x); x = F.relu(x)
-#         x = self.conv2(x); x = F.relu(x)
-#         x = F.max_pool2d(x, 2)
-#         x = self.dropout1(x)
-#         x = torch.flatten(x, 1)
-#         x = self.fc1(x); x = F.relu(x)
-#         x = self.dropout2(x)
-#         x = self.fc2(x)
-#         return F.log_softmax(x, dim=1)
-#     # NOTE: with log_softmax use nn.NLLLoss() instead of CrossEntropyLoss.
+class NeuralNetwork(nn.Module):
+    def __init__(self):
+        super(NeuralNetwork, self).__init__()
+        self.conv1 = nn.Conv2d(1, 32, 3, 1)
+        self.conv2 = nn.Conv2d(32, 64, 3, 1)
+        self.dropout1 = nn.Dropout(0.25)
+        self.dropout2 = nn.Dropout(0.5)
+        self.fc1 = nn.Linear(9216, 128)
+        self.fc2 = nn.Linear(128, 10)
+    def forward(self, x):
+        x = self.conv1(x); x = F.relu(x)
+        x = self.conv2(x); x = F.relu(x)
+        x = F.max_pool2d(x, 2)
+        x = self.dropout1(x)
+        x = torch.flatten(x, 1)
+        x = self.fc1(x); x = F.relu(x)
+        x = self.dropout2(x)
+        x = self.fc2(x)
+        return F.log_softmax(x, dim=1)
+    # NOTE: with log_softmax use nn.NLLLoss() instead of CrossEntropyLoss.
 
 
 def train(dataloader, model, loss_fn, optimizer, device):
@@ -138,13 +137,13 @@ def main(rank, world_size):
     test_data = datasets.MNIST(root="data", train=False, download=False, transform=ToTensor())
 
     batch_size = 64
-    train_sampler = DistributedSampler(training_data, num_replicas=world_size, rank=rank, shuffle=False)
+    train_sampler = DistributedSampler(training_data, num_replicas=world_size, rank=rank, shuffle=True)
     train_dataloader = DataLoader(training_data, batch_size=batch_size, sampler=train_sampler)
     test_dataloader = DataLoader(test_data, batch_size=batch_size)  # rank 0 evaluates the whole thing
 
     model = NeuralNetwork().to(device)
     ddp_model = DDP(model)
-    loss_fn = nn.CrossEntropyLoss()
+    loss_fn = nn.NLLLoss()
     optimizer = torch.optim.SGD(ddp_model.parameters(), lr=1e-3)
 
     writer = None

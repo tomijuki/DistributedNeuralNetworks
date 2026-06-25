@@ -63,17 +63,46 @@ def pin_to_core(rank):
 # -------------------------------------------------------------------------
 # Model, defined as 4 sequential STAGES (one per process).
 # -------------------------------------------------------------------------
+# -------------------------------------------------------------------------
+# Model, defined as 4 sequential STAGES (one per node).
+# -------------------------------------------------------------------------
+#def build_stage_module(stage_index):
+#    if stage_index == 0:
+#        return nn.Sequential(nn.Flatten(), nn.Linear(28 * 28, 512), nn.ReLU())
+#    elif stage_index == 1:
+#        return nn.Sequential(nn.Linear(512, 512), nn.ReLU())
+#    elif stage_index == 2:
+#        return nn.Sequential(nn.Linear(512, 256), nn.ReLU())
+#    elif stage_index == 3:
+#        return nn.Sequential(nn.Linear(256, 10))
+#    raise ValueError(f"no stage defined for index {stage_index}")
+
 def build_stage_module(stage_index):
     if stage_index == 0:
-        return nn.Sequential(nn.Flatten(), nn.Linear(28 * 28, 512), nn.ReLU())
+        return nn.Sequential(
+            nn.Conv2d(1, 32, 3, 1),
+            nn.ReLU(),
+        )
     elif stage_index == 1:
-        return nn.Sequential(nn.Linear(512, 512), nn.ReLU())
+        return nn.Sequential(
+            nn.Conv2d(32, 64, 3, 1),
+            nn.ReLU(),
+            nn.MaxPool2d(2),
+            nn.Dropout(0.25),
+            nn.Flatten(),
+        )
     elif stage_index == 2:
-        return nn.Sequential(nn.Linear(512, 256), nn.ReLU())
+        return nn.Sequential(
+            nn.Linear(9216, 128),
+            nn.ReLU(),
+            nn.Dropout(0.5),
+        )
     elif stage_index == 3:
-        return nn.Sequential(nn.Linear(256, 10))
+        return nn.Sequential(
+            nn.Linear(128, 10),
+            nn.LogSoftmax(dim=1),
+        )
     raise ValueError(f"no stage defined for index {stage_index}")
-
 
 def gather_full_state(stage_module, num_stages):
     """Collective: EVERY rank must call this. Gathers each stage's weights so
@@ -135,7 +164,7 @@ def worker(rank, world_size):
     stage = PipelineStage(stage_module, stage_index, num_stages, device)
 
     n_microbatches = 4  # more microbatches -> smaller pipeline bubble
-    loss_fn = nn.CrossEntropyLoss()
+    loss_fn = nn.NLLLoss()
     schedule = ScheduleGPipe(stage, n_microbatches=n_microbatches, loss_fn=loss_fn)
 
     # ---- data: NOT sharded. Every rank iterates the same order. ----

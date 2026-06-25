@@ -7,7 +7,6 @@ DDP/models
 PipelineParallel/data
 PipelineParallel/runs
 PipelineParallel/models
-runs
 output
 *.png
 .venv
