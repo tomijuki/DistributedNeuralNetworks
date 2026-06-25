@@ -8,5 +8,4 @@ PipelineParallel/data
 PipelineParallel/runs
 PipelineParallel/models
 output
-*.png
 .venv
