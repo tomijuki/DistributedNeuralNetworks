@@ -36,6 +36,11 @@ spec:
       - name: pytorch
         image: mnist-pipeline:latest  # Make sure to tag your built image as this
         imagePullPolicy: Always
+                # NET_ADMIN lets `tc` change this pod's qdisc for fault injection
+        # (experiment4.sh). Scoped to the pod's own netns, not the host.
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN"]
         command: ["/bin/sh", "-c"]
         args:
         - |

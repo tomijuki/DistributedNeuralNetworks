@@ -1,12 +1,11 @@
 # DDP as a StatefulSet: stable hostnames (mnist-ddp-0..3), static rendezvous
 # so rank 0 == pod mnist-ddp-0 deterministically, per-pod local-path volumes.
-# No host mounts, no NFS. Collect with:  kubectl cp mnist-ddp-0:/app/runs ...
 apiVersion: v1
 kind: Service
 metadata:
   name: mnist-ddp
 spec:
-  clusterIP: None              # headless -> gives each pod stable DNS
+  clusterIP: None
   selector:
     app: mnist-ddp
   ports:
@@ -28,7 +27,6 @@ spec:
       labels:
         app: mnist-ddp
     spec:
-      # one pod per node (drop or make 'preferred' if you have <4 schedulable nodes)
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -40,6 +38,11 @@ spec:
       - name: pytorch
         image: mnist-ddp:latest
         imagePullPolicy: Always
+        # NET_ADMIN lets `tc` change this pod's qdisc for fault injection.
+        # Scoped to the pod's own network namespace, not the host.
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN"]
         command: ["/bin/sh", "-c"]
         args:
         - |
@@ -66,7 +69,7 @@ spec:
       name: output
     spec:
       accessModes: ["ReadWriteOnce"]
-      storageClassName: local-path     # verify: kubectl get storageclass
+      storageClassName: local-path
       resources:
         requests:
           storage: 1Gi

@@ -9,3 +9,8 @@ PipelineParallel/runs
 PipelineParallel/models
 output
 .venv
+output-fault
+output-nofault
+output-pipeline-fault
+output-pipeline-nofault
+runs

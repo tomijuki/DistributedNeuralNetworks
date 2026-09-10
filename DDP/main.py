@@ -43,7 +43,7 @@ def cleanup():
 
 
 # define model
-# class NeuralNetwork(nn.Module):
+#class NeuralNetwork(nn.Module):
 #    def __init__(self):
 #        super().__init__()
 #        self.flatten = nn.Flatten()
@@ -147,7 +147,8 @@ def main():
 
     model = NeuralNetwork().to(device)
     ddp_model = DDP(model)
-    loss_fn = nn.NLLLoss()
+    #loss_fn = nn.CrossEntropyLoss()  # NOTE: no log_softmax in the model, so use CrossEntropyLoss
+    loss_fn = nn.NLLLoss()  # NOTE: with log_softmax use nn.NLLLoss() instead of CrossEntropyLoss.
     optimizer = torch.optim.SGD(ddp_model.parameters(), lr=1e-3)
 
     writer = None
