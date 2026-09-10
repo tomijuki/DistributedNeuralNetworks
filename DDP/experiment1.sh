@@ -16,7 +16,7 @@ set -uo pipefail
 
 RUNS="${1:-${RUNS:-5}}"
 
-MANIFEST="${MANIFEST:-ddp_statefulset.yaml}"
+MANIFEST="${MANIFEST:-ddp.yaml}"
 LABEL="${LABEL:-app=mnist-ddp}"
 WATCH_POD="${WATCH_POD:-mnist-ddp-0}"     # prints epochs + writes runs/models
 

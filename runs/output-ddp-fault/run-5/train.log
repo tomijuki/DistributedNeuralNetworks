@@ -1,0 +1,69 @@
+host=mnist-ddp-0 node_rank=0
+[W910 19:36:25.241542957 socket.cpp:764] [c10d] The IPv6 network addresses of (mnist-ddp-0.mnist-ddp, 29500) cannot be retrieved (gai error: -2 - Name or service not known).
+[W910 19:36:26.982976276 socket.cpp:764] [c10d] The IPv6 network addresses of (mnist-ddp-0.mnist-ddp, 29500) cannot be retrieved (gai error: -2 - Name or service not known).
+[W910 19:36:26.556046148 socket.cpp:764] [c10d] The IPv6 network addresses of (mnist-ddp-0.mnist-ddp, 29500) cannot be retrieved (gai error: -2 - Name or service not known).
+Using cpu device, world_size=4
+/usr/local/lib/python3.10/site-packages/torch/jit/_trace.py:1006: FutureWarning: `torch.jit.trace` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/usr/local/lib/python3.10/site-packages/torch/jit/_trace.py:1145: FutureWarning: `torch.jit.trace_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+DistributedDataParallel(
+  (module): NeuralNetwork(
+    (conv1): Conv2d(1, 32, kernel_size=(3, 3), stride=(1, 1))
+    (conv2): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1))
+    (dropout1): Dropout(p=0.25, inplace=False)
+    (dropout2): Dropout(p=0.5, inplace=False)
+    (fc1): Linear(in_features=9216, out_features=128, bias=True)
+    (fc2): Linear(in_features=128, out_features=10, bias=True)
+  )
+)
+Epoch 1
+-------------------------------
+train: loss 2.296476 acc 12.6%  |  test: loss 2.287046 acc 20.8%
+Epoch 2
+-------------------------------
+train: loss 2.281529 acc 19.6%  |  test: loss 2.269081 acc 40.2%
+Epoch 3
+-------------------------------
+train: loss 2.260431 acc 27.9%  |  test: loss 2.241333 acc 49.2%
+Epoch 4
+-------------------------------
+train: loss 2.225168 acc 37.2%  |  test: loss 2.194208 acc 56.8%
+Epoch 5
+-------------------------------
+train: loss 2.165267 acc 45.2%  |  test: loss 2.109144 acc 62.1%
+Epoch 6
+-------------------------------
+train: loss 2.054264 acc 51.9%  |  test: loss 1.947144 acc 69.0%
+Epoch 7
+-------------------------------
+train: loss 1.847283 acc 57.3%  |  test: loss 1.647069 acc 74.3%
+Epoch 8
+-------------------------------
+train: loss 1.526344 acc 62.4%  |  test: loss 1.240259 acc 78.8%
+Epoch 9
+-------------------------------
+train: loss 1.204209 acc 67.4%  |  test: loss 0.913867 acc 82.3%
+Epoch 10
+-------------------------------
+train: loss 0.981135 acc 71.5%  |  test: loss 0.718672 acc 84.3%
+Epoch 11
+-------------------------------
+train: loss 0.839950 acc 75.1%  |  test: loss 0.606311 acc 85.5%
+Epoch 12
+-------------------------------
+train: loss 0.749696 acc 77.4%  |  test: loss 0.535143 acc 86.8%
+Epoch 13
+-------------------------------
+train: loss 0.688162 acc 79.5%  |  test: loss 0.485280 acc 87.5%
+Epoch 14
+-------------------------------
+train: loss 0.637559 acc 80.8%  |  test: loss 0.450196 acc 88.2%
+Epoch 15
+-------------------------------
+train: loss 0.607150 acc 81.7%  |  test: loss 0.423975 acc 88.6%
+Done!
+Total time spent training: 715.81 s
+Saved PyTorch Model State to ddp_model.pth
+Predicted: "7", Actual: "7"
+=== training done; pod staying up for collection ===

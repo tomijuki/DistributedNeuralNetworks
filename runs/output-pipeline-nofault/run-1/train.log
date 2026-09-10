@@ -1,0 +1,55 @@
+host=mnist-pipeline-3 node_rank=3
+[W910 00:30:13.663327890 socket.cpp:764] [c10d] The IPv6 network addresses of (mnist-pipeline-0.mnist-pipeline, 29500) cannot be retrieved (gai error: -2 - Name or service not known).
+[W910 00:30:14.167044697 socket.cpp:764] [c10d] The IPv6 network addresses of (mnist-pipeline-0.mnist-pipeline, 29500) cannot be retrieved (gai error: -2 - Name or service not known).
+[W910 00:30:14.671973679 socket.cpp:764] [c10d] The IPv6 network addresses of (mnist-pipeline-0.mnist-pipeline, 29500) cannot be retrieved (gai error: -2 - Name or service not known).
+[W910 00:30:15.689979698 socket.cpp:764] [c10d] The IPv6 network addresses of (mnist-pipeline-0.mnist-pipeline, 29500) cannot be retrieved (gai error: -2 - Name or service not known).
+Pipeline: 4 stages, 4 microbatches, batch 64
+Epoch 1
+-------------------------------
+train: loss 2.210243 acc 30.6%  |  test: loss 1.991624 acc 68.1%
+Epoch 2
+-------------------------------
+train: loss 1.446954 acc 61.7%  |  test: loss 0.752110 acc 82.4%
+Epoch 3
+-------------------------------
+train: loss 0.751844 acc 77.1%  |  test: loss 0.454777 acc 87.7%
+Epoch 4
+-------------------------------
+train: loss 0.575870 acc 82.5%  |  test: loss 0.373401 acc 89.5%
+Epoch 5
+-------------------------------
+train: loss 0.498880 acc 84.9%  |  test: loss 0.330722 acc 90.6%
+Epoch 6
+-------------------------------
+train: loss 0.454476 acc 86.4%  |  test: loss 0.305175 acc 91.1%
+Epoch 7
+-------------------------------
+train: loss 0.421528 acc 87.3%  |  test: loss 0.279904 acc 91.9%
+Epoch 8
+-------------------------------
+train: loss 0.395342 acc 88.2%  |  test: loss 0.259691 acc 92.4%
+Epoch 9
+-------------------------------
+train: loss 0.370534 acc 88.9%  |  test: loss 0.243571 acc 92.8%
+Epoch 10
+-------------------------------
+train: loss 0.354704 acc 89.3%  |  test: loss 0.229353 acc 93.3%
+Epoch 11
+-------------------------------
+train: loss 0.336599 acc 89.9%  |  test: loss 0.217258 acc 93.7%
+Epoch 12
+-------------------------------
+train: loss 0.325718 acc 90.4%  |  test: loss 0.207970 acc 93.9%
+Epoch 13
+-------------------------------
+train: loss 0.313333 acc 90.7%  |  test: loss 0.199230 acc 94.1%
+Epoch 14
+-------------------------------
+train: loss 0.300150 acc 91.1%  |  test: loss 0.189375 acc 94.3%
+Epoch 15
+-------------------------------
+train: loss 0.292481 acc 91.3%  |  test: loss 0.182062 acc 94.6%
+Done!
+Total time spent training: 1732.29 s
+Saved pipeline model to models/pipeline_model.pth
+=== training done; pod staying up for collection ===

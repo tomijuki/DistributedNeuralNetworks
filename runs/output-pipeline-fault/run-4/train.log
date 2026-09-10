@@ -1,0 +1,51 @@
+host=mnist-pipeline-3 node_rank=3
+Pipeline: 4 stages, 4 microbatches, batch 64
+Epoch 1
+-------------------------------
+train: loss 2.227327 acc 29.5%  |  test: loss 2.058483 acc 66.8%
+Epoch 2
+-------------------------------
+train: loss 1.549787 acc 60.9%  |  test: loss 0.807756 acc 83.5%
+Epoch 3
+-------------------------------
+train: loss 0.768492 acc 77.2%  |  test: loss 0.462562 acc 87.9%
+Epoch 4
+-------------------------------
+train: loss 0.581201 acc 82.5%  |  test: loss 0.377971 acc 89.4%
+Epoch 5
+-------------------------------
+train: loss 0.504962 acc 84.7%  |  test: loss 0.337230 acc 90.4%
+Epoch 6
+-------------------------------
+train: loss 0.461996 acc 86.1%  |  test: loss 0.311096 acc 91.0%
+Epoch 7
+-------------------------------
+train: loss 0.428253 acc 87.3%  |  test: loss 0.287753 acc 91.6%
+Epoch 8
+-------------------------------
+train: loss 0.404367 acc 87.8%  |  test: loss 0.269393 acc 92.1%
+Epoch 9
+-------------------------------
+train: loss 0.383210 acc 88.6%  |  test: loss 0.254618 acc 92.6%
+Epoch 10
+-------------------------------
+train: loss 0.365413 acc 89.2%  |  test: loss 0.239716 acc 92.9%
+Epoch 11
+-------------------------------
+train: loss 0.349089 acc 89.7%  |  test: loss 0.229184 acc 93.2%
+Epoch 12
+-------------------------------
+train: loss 0.336160 acc 90.0%  |  test: loss 0.217706 acc 93.7%
+Epoch 13
+-------------------------------
+train: loss 0.323607 acc 90.5%  |  test: loss 0.207646 acc 93.8%
+Epoch 14
+-------------------------------
+train: loss 0.313476 acc 90.8%  |  test: loss 0.199976 acc 94.0%
+Epoch 15
+-------------------------------
+train: loss 0.301473 acc 91.1%  |  test: loss 0.190899 acc 94.3%
+Done!
+Total time spent training: 1755.16 s
+Saved pipeline model to models/pipeline_model.pth
+=== training done; pod staying up for collection ===

@@ -1,31 +1,27 @@
 #!/bin/bash
 set -uo pipefail
 
-# Run the full experiment N times, injecting a fault each run, collecting the
-# results into a per-run directory, and tearing down cleanly in between.
+# BASELINE (single node, no distribution): run N times. No faults --
+# there is no network synchronization to disturb on one pod.
 #
 # Per iteration:
-#   apply -> wait ready -> arm fault at epoch E -> wait for "training done"
-#   -> collect to output/run-N -> delete -> wait for pods to fully terminate
+#   apply -> wait ready -> wait for "training done" -> collect to output-baseline/run-N
+#   -> delete -> wait for pods to fully terminate
 #
 # Usage:
-#   ./run_experiments.sh                       # 5 runs, DDP, mild @ epoch 10, 60s
-#   ./run_experiments.sh 3                     # 3 runs
-#   RUNS=5 MANIFEST=pipeline-statefulset.yaml WATCH_POD=mnist-pipeline-3 \
-#     TARGET_POD=mnist-pipeline-1 LABEL=app=mnist-pipeline ./run_experiments.sh
+#   ./experiment0.sh                           # 5 runs, DDP
+#   ./experiment0.sh 3                         # 3 runs
+#   RUNS=5 MANIFEST=job.yaml WATCH_POD=mnist-baseline-0 \
+#     LABEL=app=mnist-baseline ./experiment0.sh
 
 RUNS="${1:-${RUNS:-5}}"
 
-MANIFEST="${MANIFEST:-ddp.yaml}"
-LABEL="${LABEL:-app=mnist-ddp}"
-WATCH_POD="${WATCH_POD:-mnist-ddp-0}"     # prints epochs + writes runs/models
-TARGET_POD="${TARGET_POD:-mnist-ddp-2}"   # gets the fault
-FAULT_EPOCH="${FAULT_EPOCH:-10}"
-FAULT_SECS="${FAULT_SECS:-60}"
-FAULT_LEVEL="${FAULT_LEVEL:-mild}"
+MANIFEST="${MANIFEST:-job.yaml}"
+LABEL="${LABEL:-app=mnist-baseline}"
+WATCH_POD="${WATCH_POD:-mnist-baseline-0}"     # single pod: prints epochs + writes runs/models
 
-DEST_ROOT="${DEST_ROOT:-$HOME/DIPLOMSKI/DistributedNeuralNetworks/output-fault}"
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Separate output root so these runs don't overwrite experiment2's run-N dirs.
+DEST_ROOT="${DEST_ROOT:-$HOME/DIPLOMSKI/DistributedNeuralNetworks/output-baseline}"
 
 # Marker main.py prints after training, before `sleep infinity`.
 DONE_MARKER="training done"
@@ -33,8 +29,7 @@ READY_TIMEOUT="600s"
 TRAIN_TIMEOUT="${TRAIN_TIMEOUT:-3600}"   # seconds to wait for training to finish
 
 echo "=========================================================="
-echo " $RUNS runs | $MANIFEST"
-echo " fault: $FAULT_LEVEL on $TARGET_POD @ epoch $FAULT_EPOCH for ${FAULT_SECS}s"
+echo " $RUNS runs | $MANIFEST | BASELINE, single node"
 echo " results -> $DEST_ROOT/run-N"
 echo "=========================================================="
 
@@ -95,13 +90,6 @@ for i in $(seq 1 "$RUNS"); do
         continue
     fi
 
-    # Arm the fault in the background; it watches the log for the epoch line.
-    echo "  arming fault @ epoch $FAULT_EPOCH ..."
-    "$SCRIPT_DIR/fault_at_epoch.sh" "$FAULT_EPOCH" "$FAULT_SECS" "$FAULT_LEVEL" \
-        "$WATCH_POD" "$TARGET_POD" > "$DEST/fault.log" 2>&1 &
-    FAULT_PID=$!
-
-    # Block until training finishes (marker line), streaming the log to file.
     echo "  training ... (following $WATCH_POD)"
     # Stream the log to a file in the BACKGROUND and poll it for the marker.
     # (Do NOT pipe into `grep -m1`: after grep exits, `tee`/`kubectl` block on
@@ -135,12 +123,6 @@ for i in $(seq 1 "$RUNS"); do
     wait "$TAIL_PID" "$LOG_PID" 2>/dev/null
 
     echo "  training finished at $(date +%T)"
-
-    # Fault should be long done; kill the watcher if it's somehow still alive,
-    # and make sure no qdisc is left behind on the target.
-    kill "$FAULT_PID" 2>/dev/null
-    wait "$FAULT_PID" 2>/dev/null
-    "$SCRIPT_DIR/fault_inject.sh" off "$TARGET_POD" >/dev/null 2>&1
 
     # Collect while the pod is still up (sleep infinity keeps it alive).
     echo "  collecting -> $DEST"

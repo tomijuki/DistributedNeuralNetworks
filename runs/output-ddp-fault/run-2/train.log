@@ -1,0 +1,66 @@
+host=mnist-ddp-0 node_rank=0
+Using cpu device, world_size=4
+/usr/local/lib/python3.10/site-packages/torch/jit/_trace.py:1006: FutureWarning: `torch.jit.trace` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/usr/local/lib/python3.10/site-packages/torch/jit/_trace.py:1145: FutureWarning: `torch.jit.trace_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+DistributedDataParallel(
+  (module): NeuralNetwork(
+    (conv1): Conv2d(1, 32, kernel_size=(3, 3), stride=(1, 1))
+    (conv2): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1))
+    (dropout1): Dropout(p=0.25, inplace=False)
+    (dropout2): Dropout(p=0.5, inplace=False)
+    (fc1): Linear(in_features=9216, out_features=128, bias=True)
+    (fc2): Linear(in_features=128, out_features=10, bias=True)
+  )
+)
+Epoch 1
+-------------------------------
+train: loss 2.298335 acc 11.5%  |  test: loss 2.290151 acc 17.6%
+Epoch 2
+-------------------------------
+train: loss 2.285630 acc 17.5%  |  test: loss 2.275049 acc 32.5%
+Epoch 3
+-------------------------------
+train: loss 2.268874 acc 25.2%  |  test: loss 2.252783 acc 49.5%
+Epoch 4
+-------------------------------
+train: loss 2.242309 acc 33.9%  |  test: loss 2.218970 acc 61.7%
+Epoch 5
+-------------------------------
+train: loss 2.202458 acc 41.1%  |  test: loss 2.165844 acc 68.8%
+Epoch 6
+-------------------------------
+train: loss 2.136155 acc 47.6%  |  test: loss 2.072439 acc 73.1%
+Epoch 7
+-------------------------------
+train: loss 2.015625 acc 53.2%  |  test: loss 1.898152 acc 75.0%
+Epoch 8
+-------------------------------
+train: loss 1.802849 acc 58.1%  |  test: loss 1.592605 acc 77.6%
+Epoch 9
+-------------------------------
+train: loss 1.489291 acc 62.6%  |  test: loss 1.201784 acc 80.3%
+Epoch 10
+-------------------------------
+train: loss 1.179075 acc 67.8%  |  test: loss 0.889341 acc 82.8%
+Epoch 11
+-------------------------------
+train: loss 0.964054 acc 71.9%  |  test: loss 0.703020 acc 84.5%
+Epoch 12
+-------------------------------
+train: loss 0.831999 acc 75.2%  |  test: loss 0.593951 acc 86.0%
+Epoch 13
+-------------------------------
+train: loss 0.738151 acc 77.6%  |  test: loss 0.523236 acc 86.8%
+Epoch 14
+-------------------------------
+train: loss 0.677231 acc 79.5%  |  test: loss 0.477704 acc 87.9%
+Epoch 15
+-------------------------------
+train: loss 0.636005 acc 80.6%  |  test: loss 0.446628 acc 88.3%
+Done!
+Total time spent training: 718.24 s
+Saved PyTorch Model State to ddp_model.pth
+Predicted: "7", Actual: "7"
+=== training done; pod staying up for collection ===

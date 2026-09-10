@@ -1,0 +1,10 @@
+Watching mnist-ddp-0 for epoch 10 ...
+  will fault mnist-ddp-2 [mild] for 60s
+----- live log -----
+----- end of watch -----
+MATCHED: Epoch 10
+Epoch 10 reached at 20:47:37 -- injecting.
+Injecting into mnist-ddp-2 [mild]: delay 10ms limit 20000 loss 0.05%
+Holding fault for 60s  (t=0 20:47:37)
+   60s remaining    59s remaining    58s remaining    57s remaining    56s remaining    55s remaining    54s remaining    53s remaining    52s remaining    51s remaining    50s remaining    49s remaining    48s remaining    47s remaining    46s remaining    45s remaining    44s remaining    43s remaining    42s remaining    41s remaining    40s remaining    39s remaining    38s remaining    37s remaining    36s remaining    35s remaining    34s remaining    33s remaining    32s remaining    31s remaining    30s remaining    29s remaining    28s remaining    27s remaining    26s remaining    25s remaining    24s remaining    23s remaining    22s remaining    21s remaining    20s remaining    19s remaining    18s remaining    17s remaining    16s remaining    15s remaining    14s remaining    13s remaining    12s remaining    11s remaining    10s remaining     9s remaining     8s remaining     7s remaining     6s remaining     5s remaining     4s remaining     3s remaining     2s remaining     1s remaining                      Fault removed after 60s (20:48:37)
+qdisc noqueue 0: root refcnt 2 
